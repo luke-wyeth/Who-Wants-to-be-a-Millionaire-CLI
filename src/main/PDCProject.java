@@ -12,7 +12,7 @@ public class PDCProject
         
         Scanner scan = new Scanner(System.in);
         
-        Question testQuestion = new Question(test1,test2,test3);
+        Question testQuestion = new Question(1,test1,test2,test3);
         testQuestion.printQuestion();
         int response = scan.nextInt();
         

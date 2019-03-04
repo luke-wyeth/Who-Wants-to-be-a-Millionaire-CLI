@@ -9,12 +9,19 @@ public class Question implements Serializable
     private final String question;
     private final String[] answers;
     private final char correctAns;
+    public final int level; 
     
-    public Question(String question, String[] answers, char correctAns)
+    public Question(int level, String question, String[] answers, char correctAns)
     {
+        this.level = level;
         this.question = question;
         this.answers = answers;
         this.correctAns = correctAns;
+    }
+    
+    public int getLevel()
+    {
+        return level;
     }
     
     public String getQuestion()
