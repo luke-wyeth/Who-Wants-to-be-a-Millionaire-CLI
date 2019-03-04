@@ -5,10 +5,20 @@
  */
 package main;
 
+import java.util.List;
+
 /**
  *
  * @author lukewyeth
  */
-public class createQuestions {
+public class createQuestions 
+{
+    public createQuestions()
+    {}
+    
+    public List create()
+    {
+        
+    }
     
 }
