@@ -43,7 +43,7 @@ public class Question
         
         for (int count = 0; count < 4; count++)
         {
-            System.out.println(answers[count]);
+            System.out.println((count+1) + ") " + answers[count]);
         }
     }
 }

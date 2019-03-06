@@ -9,23 +9,11 @@ public class PDCProject
     {
         Game game = new Game();
         
-        Question testQ = (Question) game.questions.get(0).get(0);
-        
-
-        
-        Scanner scan = new Scanner(System.in);
-
-        testQ.printQuestion();
-        int response = scan.nextInt();
-        
-        if (response == testQ.getCorrectAns())
+        while (game.isPlaying())
         {
-            System.out.println("yes");
+            game.askQuestion();
         }
-        else
-        {
-            System.out.println("no");
-        }
+        
     }
 
 }
