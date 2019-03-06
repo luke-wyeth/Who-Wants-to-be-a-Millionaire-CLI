@@ -1,22 +1,24 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class PDCProject 
 {
     public static void main(String[] args) 
     {
-        String test1 = "Whats my cats name????";
-        String[] test2 = new String[]{"1) goose","2) ellie","3) dog","4) shit"};
-        char test3 = 'd';
+        Game game = new Game();
+        
+        Question testQ = (Question) game.questions.get(0).get(0);
+        
+
         
         Scanner scan = new Scanner(System.in);
-        
-        Question testQuestion = new Question(1,test1,test2,test3);
-        testQuestion.printQuestion();
+
+        testQ.printQuestion();
         int response = scan.nextInt();
         
-        if (response == 4)
+        if (response == testQ.getCorrectAns())
         {
             System.out.println("yes");
         }

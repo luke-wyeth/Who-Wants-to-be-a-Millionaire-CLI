@@ -1,17 +1,15 @@
 
 package main;
 
-import java.io.Serializable;
-
-public class Question implements Serializable
+public class Question
 { 
     // private and final to avoid tampering by other classes
     private final String question;
     private final String[] answers;
-    private final char correctAns;
+    private final int correctAns;
     public final int level; 
     
-    public Question(int level, String question, String[] answers, char correctAns)
+    public Question(int level, String question, String[] answers, int correctAns)
     {
         this.level = level;
         this.question = question;
@@ -34,7 +32,7 @@ public class Question implements Serializable
         return answers;
     }
     
-    public char getCorrectAns()
+    public int getCorrectAns()
     {
         return correctAns;
     }
