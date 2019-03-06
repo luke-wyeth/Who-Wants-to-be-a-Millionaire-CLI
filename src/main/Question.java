@@ -32,6 +32,12 @@ public class Question
         return answers;
     }
     
+    // 50/50 lifeline uses this class to remove 2 answers
+    public void setAnswers(int index, String newAns) 
+    {
+        answers[index] = newAns;
+    }
+    
     public int getCorrectAns()
     {
         return correctAns;
