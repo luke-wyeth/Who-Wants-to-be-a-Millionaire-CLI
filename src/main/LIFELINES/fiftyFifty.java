@@ -15,7 +15,7 @@ public class fiftyFifty extends lifeline
     {
         if (super.getUsed())
         {
-            System.out.println("This lifeline has already been used! Select a different one or answer the question.");
+            System.out.println("50/50 has already been used! Select a different lifeline or answer the question.");
             return -1;
         }
         

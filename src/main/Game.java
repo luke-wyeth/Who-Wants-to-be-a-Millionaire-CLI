@@ -45,7 +45,10 @@ public class Game
     
     public void askQuestion()
     {
-        System.out.println("For " + prize[prizeNum]);
+        System.out.println("-------------------------------------------------------------------------------------");
+        System.out.println("COMMANDS: (1-4: Answer Questions) - (6: WALK AWAY) - (8: 50/50) - (9: PaF) - (0: AtA)");
+        System.out.println("\nFor " + prize[prizeNum]);
+        
         // select random question from current level
         int qNum = rand.nextInt(questions.get(currentLevel).size());
         Question selectedQ = (Question) questions.get(currentLevel).get(qNum);
@@ -81,8 +84,9 @@ public class Game
                           
             } catch (java.util.InputMismatchException e)
             {
-                System.out.println("Please enter the number of your answer "
-                        + "or the number of the lifeline you would like to use.");
+                System.out.println("Please enter the number of your answer, "
+                        + "the number of the lifeline you would like to use,"
+                        + "or 6 to walk away!");
                 scan.next();
             }
         }
@@ -127,8 +131,6 @@ public class Game
             // TODO: win conditions + results
             isPlaying = false;
         }
-        
-       
     }
     
     public int getLevel()

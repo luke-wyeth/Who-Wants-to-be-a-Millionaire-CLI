@@ -23,7 +23,7 @@ public class ATA extends lifeline
         
         super.setUsed();
         
-        return -1;
+        return -1; // returning -1 triggers re-scan for answer
     }
     
 }
