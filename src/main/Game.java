@@ -63,11 +63,17 @@ public class Game
               pAns = scan.nextInt();
               
                 // check for user entering invalid numbers, re-prompt commands
-                if (pAns == 5 || pAns == 6 || pAns == 7) 
+                if (pAns == 5 || pAns == 7) 
                 {
                     System.out.println("You need to enter a number between 1 and 4 to answer, or to use a lifeline: \n"
                             + "8: 50/50\n9: Phone a Friend\n0: Ask the Audience");
                     pAns = -1; // trigger re-scan
+                }
+                else if (pAns == 6)
+                {
+                    System.out.println("Congratulations! You walked away with " + prize[prizeNum]);
+                    isPlaying = false;
+                    // TODO: add WALK AWAY functionality
                 }
                 else if (pAns == 8) // 50/50 lifeline selected
                 {
@@ -91,8 +97,12 @@ public class Game
             }
         }
         
-        // once validated answer is recieved (from this object OR from lifeline
-        checkAnswer(selectedQ, qNum, pAns);
+        // check once validated answer is recieved (from this object OR from lifeline object)
+        // do not check for 6 (walk away)
+        if (pAns != 6)
+        {
+            checkAnswer(selectedQ, qNum, pAns);
+        }
 
     }
     
