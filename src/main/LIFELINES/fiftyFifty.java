@@ -50,6 +50,8 @@ public class fiftyFifty extends lifeline
         question.setAnswers(remove2, " ");
         
         question.printQuestion();
+        
+        System.out.println("Enter your answer now: ");
 
         super.setUsed();
         return -1; // returning -1 triggers re-scan for answer

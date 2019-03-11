@@ -20,7 +20,11 @@ public class Game
     private Scanner scan;
     private boolean isPlaying;
     private String[] prize; // corr. to prizeNum
-    private int prizeNum; // corr. to current prize player is on
+    private int prizeNum; // corr. to current prize player is on 
+    // end conditions, use to determine game end state
+    private boolean walkedAway;
+    private boolean lost;
+    private boolean won;
     
     public Game()
     {
@@ -41,11 +45,16 @@ public class Game
         ATA = new ATA();
         PAF = new PAF();
         fiftyFifty = new fiftyFifty();
+        
+        // setup end conditions
+        walkedAway = false;
+        lost = false;
+        won = false;
     }
     
     public void askQuestion()
     {
-        System.out.println("-------------------------------------------------------------------------------------");
+        System.out.println("______________________________________________________________________________________");
         System.out.println("COMMANDS: (1-4: Answer Questions) - (6: WALK AWAY) - (8: 50/50) - (9: PaF) - (0: AtA)");
         System.out.println("\nFor " + prize[prizeNum]);
         
@@ -121,6 +130,11 @@ public class Game
         }
     }
  
+    public void end()
+    {
+        
+    }
+    
     // should only be called when a question has been answered CORRECTLY
     public void incrementProg() // used to move progress OR move up a level
     {

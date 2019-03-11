@@ -62,6 +62,8 @@ public class PAF extends lifeline
        
        System.out.println(reply);
        
+        System.out.println("Enter your answer now: ");
+       
        super.setUsed();
        return -1; // returning -1 triggers re-scan for answer
     }
