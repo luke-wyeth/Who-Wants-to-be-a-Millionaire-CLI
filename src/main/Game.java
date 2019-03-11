@@ -11,9 +11,9 @@ import main.LIFELINES.lifeline;
 public class Game
 {
     public ArrayList<ArrayList> questions;
-    public lifeline ATA; // ask the audience
-    public lifeline PAF; // phone a friend
-    public lifeline fiftyFifty; // 50:50 lifeline
+    private lifeline ATA; // ask the audience
+    private lifeline PAF; // phone a friend
+    private lifeline fiftyFifty; // 50:50 lifeline
     private int currentLevel;
     private int levelProgression; // how far through the level player is [1-5]
     private Random rand;
@@ -25,6 +25,7 @@ public class Game
     private boolean walkedAway;
     private boolean lost;
     private boolean won;
+    private int lifelinesUsed; // tally lifelines used to calculate score
     
     public Game()
     {
@@ -80,21 +81,39 @@ public class Game
                 }
                 else if (pAns == 6)
                 {
-                    System.out.println("Congratulations! You walked away with " + prize[prizeNum]);
-                    isPlaying = false;
-                    // TODO: add WALK AWAY functionality
+                    if (prizeNum == 0)
+                    {
+                        System.out.println("Are you sure you want to walk away with $0? (y/n)");
+                    }
+                    else
+                    {
+                         System.out.println("Are you sure you want to walk away with " + prize[prizeNum-1] + "? (y/n)");
+                    }
+                   
+                    char response = scan.next().charAt(0);      
+                    if (response == 'y')
+                    {
+                        end();
+                    }
+                    else
+                    {
+                        pAns = -1;
+                    }
                 }
                 else if (pAns == 8) // 50/50 lifeline selected
                 {
                     pAns = fiftyFifty.use(selectedQ);
+                    lifelinesUsed++;
                 }
                 else if (pAns == 9) // phone a friend lifeline
                 {
                     pAns = PAF.use(selectedQ);
+                    lifelinesUsed++;
                 }
                 else if (pAns == 0) // ask the audience lifeline
                 {
                     pAns = ATA.use(selectedQ);
+                    lifelinesUsed++;
                 }
                           
             } catch (java.util.InputMismatchException e)
@@ -125,14 +144,51 @@ public class Game
         }
         else // answer is INCORRECT
         {
-            System.out.println("No! You lose"); 
-            isPlaying = false;
+            lost = true;
+            end();
         }
     }
  
     public void end()
     {
+        if (walkedAway)
+        {   
+            if (prizeNum != 0)
+            {
+                System.out.println("Congratulations! You walked away with " + prize[prizeNum-1]);
+            }
+            else
+            {
+                System.out.println("You walked away with $0. You quit before it even started.");
+            } 
+        }
+        if (lost)
+        {
+            if (currentLevel == 0)
+            {
+                System.out.println("That is incorrect! You lose, and unfortunately you walk away with $0");
+            }
+            else if (currentLevel == 1)
+            {
+                System.out.println("That is incorrect! You lose, but you still get to walk away with " + prize[5]);
+            }
+            else if (currentLevel == 3)
+            {
+                System.out.println("That is incorrect! You lose, but you still get to walk away with " + prize[10]);
+            }
+        }
+        if (won)
+        {
+            System.out.println("-----------------------------------------"
+                           + "\nCONGRATULATIONS! You have won $1 MILLION."
+                           + "\n-----------------------------------------");
+        }
         
+        // calculate score = prizeNum - amount of lifelines used
+        int score = prizeNum - lifelinesUsed;
+        
+        System.out.println("Your score is " + score);
+        isPlaying = false;
     }
     
     // should only be called when a question has been answered CORRECTLY
@@ -152,8 +208,8 @@ public class Game
         }
         else if (prizeNum == 14)
         {
-            // TODO: win conditions + results
-            isPlaying = false;
+            won = true;
+            end();
         }
     }
     

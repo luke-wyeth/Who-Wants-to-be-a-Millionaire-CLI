@@ -7,7 +7,7 @@ public class Question
     private final String question;
     private final String[] answers;
     private final int correctAns;
-    public final int level; 
+    private final int level; 
     
     public Question(int level, String question, String[] answers, int correctAns)
     {

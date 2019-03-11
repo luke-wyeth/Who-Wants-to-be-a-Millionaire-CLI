@@ -39,7 +39,6 @@ public class PAF extends lifeline
        // chance of giving correct answer is 70%
        // 1-7 = correct answer, 8-10 = random false answer
        int correct = rand.nextInt(10);
-       System.out.println(correct);
        
        if (correct < 7)
        {
@@ -60,9 +59,10 @@ public class PAF extends lifeline
        
        reply = reply + answer;
        
+        System.out.println("Your friend says...");
        System.out.println(reply);
        
-        System.out.println("Enter your answer now: ");
+       System.out.println("Enter your answer now: ");
        
        super.setUsed();
        return -1; // returning -1 triggers re-scan for answer
