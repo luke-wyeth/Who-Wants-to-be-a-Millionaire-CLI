@@ -35,12 +35,4 @@ public class HighScore implements Serializable
         // TODO: add save to file
     }
     
-    public ArrayList<HighScore> getHighScores()
-    {
-        ArrayList<HighScore> scores = new ArrayList();
-        
-        // TODO: add scan from file
-        
-        return scores;
-    }
 }

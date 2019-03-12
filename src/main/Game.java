@@ -40,7 +40,7 @@ public class Game
         
         prizeNum = 0; // incremement for each correct question, correspond to prize amount
         prize = new String[]{"$100","$200","$300","$500","$1,000","$2,000",
-            "$4,000","$8,000","$16,000","$32,000","$64,000","$125,000","$25,000","$500,000","$1 MILLION"};
+            "$4,000","$8,000","$16,000","$32,000","$64,000","$125,000","$250,000","$500,000","$1 MILLION"};
         
         // setup lifelines
         ATA = new ATA();
@@ -93,10 +93,12 @@ public class Game
                     char response = scan.next().charAt(0);      
                     if (response == 'y')
                     {
+                        walkedAway = true;
                         end();
                     }
                     else
                     {
+                        System.out.println("Enter your answer:");
                         pAns = -1;
                     }
                 }
@@ -184,10 +186,19 @@ public class Game
                            + "\n-----------------------------------------");
         }
         
-        // calculate score = prizeNum - amount of lifelines used
-        int score = prizeNum - lifelinesUsed;
+        // calculate score = prizeNum * 5 - amount of lifelines used * 3
+        int score = (prizeNum * 5) - (lifelinesUsed * 3);
         
-        System.out.println("Your score is " + score);
+        System.out.println("\nYour score is " + score);
+        String saveName;
+        System.out.println("Enter your name to save your score, or enter 6 to quit without saving!");
+        saveName = scan.next();
+        
+        if (saveName.charAt(0) != '6')
+        {
+            HighScore hScore = new HighScore(saveName, score);
+        }
+        
         isPlaying = false;
     }
     
