@@ -5,13 +5,15 @@
  */
 package main;
 
-import java.io.Serializable;
+
+import java.io.*;
 import java.util.ArrayList;
 
 public class HighScore implements Serializable
 {
     private String name;
     private int score;
+    private ArrayList<HighScore> scores;
     
     public HighScore(String name, int score)
     {
@@ -29,10 +31,10 @@ public class HighScore implements Serializable
        return score;
     }
     
-    public void saveScore()
+    @Override
+    public String toString()
     {
-        System.out.println("score saved to file");
-        // TODO: add save to file
+        return name + " " + score;
     }
     
 }

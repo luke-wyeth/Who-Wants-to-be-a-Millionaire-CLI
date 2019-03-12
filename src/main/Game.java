@@ -1,8 +1,12 @@
 package main;
 
+import java.io.*;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import main.LIFELINES.ATA;
 import main.LIFELINES.PAF;
 import main.LIFELINES.fiftyFifty;
@@ -21,11 +25,13 @@ public class Game
     private boolean isPlaying;
     private String[] prize; // corr. to prizeNum
     private int prizeNum; // corr. to current prize player is on 
+    private ArrayList<HighScore> scores;
     // end conditions, use to determine game end state
     private boolean walkedAway;
     private boolean lost;
     private boolean won;
     private int lifelinesUsed; // tally lifelines used to calculate score
+    private HighScore finalScore;
     
     public Game()
     {
@@ -51,6 +57,9 @@ public class Game
         walkedAway = false;
         lost = false;
         won = false;
+        
+        // load in previous scores to scores list
+        getScores();
     }
     
     public void askQuestion()
@@ -194,9 +203,12 @@ public class Game
         System.out.println("Enter your name to save your score, or enter 6 to quit without saving!");
         saveName = scan.next();
         
+        // if user wants to save score, create new score object and
+        // call method to save score to file
         if (saveName.charAt(0) != '6')
         {
-            HighScore hScore = new HighScore(saveName, score);
+            finalScore = new HighScore(saveName, score);
+            saveScore();
         }
         
         isPlaying = false;
@@ -232,5 +244,54 @@ public class Game
     public boolean isPlaying()
     {
         return isPlaying;
+    }
+    
+    // load scores from file into program
+    public void getScores()
+    {
+        scores = new ArrayList<HighScore>();
+        File scoreFile = new File("scores");
+        boolean newFile = false;
+        
+        try
+        { 
+            // if newFile = true then know not to scan for scores (there arent any)
+            newFile = scoreFile.createNewFile(); 
+            
+        } catch (IOException ex)
+        {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (newFile = false)
+        {
+            try(ObjectInputStream in = new ObjectInputStream(new ObjectInputStream(new FileInputStream("scores")))) 
+            {
+                scores = (ArrayList<HighScore>)in.readObject();
+
+            } catch (IOException | ClassNotFoundException e)
+            {
+                System.err.println(e);
+            }
+        }
+    }
+    
+    // save scores + new score to file 
+    public void saveScore()
+    {
+        System.out.println("score saved to file");
+        scores.add(finalScore); // add users score to file
+        // TODO: sort scores in ranking, format output of scores etc
+
+        try(ObjectOutputStream out = new ObjectOutputStream(new ObjectOutputStream(new FileOutputStream("scores")))) 
+        {
+            out.writeObject(scores);
+            
+        } catch (Exception e) 
+        {
+            System.err.println(e);
+        }
+        System.out.println(scores + " " + scores.size());
+        
     }
 }
