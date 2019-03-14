@@ -263,7 +263,7 @@ public class Game
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        if (newFile = false)
+        if (newFile == false)
         {
             try(ObjectInputStream in = new ObjectInputStream(new ObjectInputStream(new FileInputStream("scores")))) 
             {
