@@ -1,17 +1,9 @@
 package main;
 
 import java.io.*;
-import java.io.ObjectInputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import main.LIFELINES.ATA;
-import main.LIFELINES.PAF;
-import main.LIFELINES.fiftyFifty;
-import main.LIFELINES.lifeline;
+import java.util.*;
+import java.util.logging.*;
+import main.LIFELINES.*;
 
 public class Game
 {
