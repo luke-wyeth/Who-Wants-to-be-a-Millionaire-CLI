@@ -3,6 +3,7 @@ package main;
 import java.io.*;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -73,6 +74,11 @@ public class Game
         Question selectedQ = (Question) questions.get(currentLevel).get(qNum);
         
         selectedQ.printQuestion();
+        processAnswer(selectedQ, qNum);
+    }
+    
+    public void processAnswer(Question selectedQ, int qNum)
+    {
         int pAns = -1;
         
         while (pAns == -1) // all lifelines return -1 to scan answer again
@@ -88,7 +94,7 @@ public class Game
                             + "8: 50/50\n9: Phone a Friend\n0: Ask the Audience");
                     pAns = -1; // trigger re-scan
                 }
-                else if (pAns == 6)
+                else if (pAns == 6) // player wants to walk away
                 {
                     if (prizeNum == 0)
                     {
@@ -99,6 +105,7 @@ public class Game
                          System.out.println("Are you sure you want to walk away with " + prize[prizeNum-1] + "? (y/n)");
                     }
                    
+                    // confirm walk away action
                     char response = scan.next().charAt(0);      
                     if (response == 'y')
                     {
@@ -136,13 +143,12 @@ public class Game
             }
         }
         
-        // check once validated answer is recieved (from this object OR from lifeline object)
-        // do not check for 6 (walk away)
+        // check once valid answer is recieved (from this object OR from lifeline object)
+        // do not check for 6 (player has walked away)
         if (pAns != 6)
         {
             checkAnswer(selectedQ, qNum, pAns);
         }
-
     }
     
     public void checkAnswer(Question q, int qNum, int pAns)
@@ -246,6 +252,9 @@ public class Game
         return isPlaying;
     }
     
+    //--------- FILEIO LOAD AND SAVE SCORES ---------
+    
+    
     // load scores from file into program
     public void getScores()
     {
@@ -255,6 +264,7 @@ public class Game
         
         try
         { 
+            // try to create new file in case this is the first time the game has been played
             // if newFile = true then know not to scan for scores (there arent any)
             newFile = scoreFile.createNewFile(); 
             
@@ -263,6 +273,7 @@ public class Game
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        // a new file has not been created so there are previous scores to load
         if (newFile == false)
         {
             try(ObjectInputStream in = new ObjectInputStream(new ObjectInputStream(new FileInputStream("scores")))) 
@@ -281,7 +292,9 @@ public class Game
     {
         System.out.println("score saved to file");
         scores.add(finalScore); // add users score to file
-        // TODO: sort scores in ranking, format output of scores etc
+        // TODO: format output of scores etc
+        Collections.sort(scores); // sort low to high
+        Collections.reverse(scores); // reverse to high to low
 
         try(ObjectOutputStream out = new ObjectOutputStream(new ObjectOutputStream(new FileOutputStream("scores")))) 
         {
@@ -291,7 +304,7 @@ public class Game
         {
             System.err.println(e);
         }
-        System.out.println(scores + " " + scores.size());
+        System.out.println(scores);
         
     }
 }

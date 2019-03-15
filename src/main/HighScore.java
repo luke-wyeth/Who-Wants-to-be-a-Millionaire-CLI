@@ -9,7 +9,7 @@ package main;
 import java.io.*;
 import java.util.ArrayList;
 
-public class HighScore implements Serializable
+public class HighScore implements Serializable, Comparable
 {
     private String name;
     private int score;
@@ -35,6 +35,16 @@ public class HighScore implements Serializable
     public String toString()
     {
         return name + " " + score;
+    }
+
+    @Override
+    public int compareTo(Object o)
+    {
+        // negative if this is less than supplied 
+        // 0 if equal
+        // positive if this is greater than supplied
+        
+        return score - ((HighScore)o).getScore();
     }
     
 }
