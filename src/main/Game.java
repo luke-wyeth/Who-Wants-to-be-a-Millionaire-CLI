@@ -8,17 +8,17 @@ import main.LIFELINES.*;
 public class Game
 {
     public ArrayList<ArrayList> questions;
-    private lifeline ATA; // ask the audience
-    private lifeline PAF; // phone a friend
-    private lifeline fiftyFifty; // 50:50 lifeline
+    private final lifeline ATA; // ask the audience
+    private final lifeline PAF; // phone a friend
+    private final lifeline fiftyFifty; // 50:50 lifeline
     private int currentLevel;
     private int levelProgression; // how far through the level player is [1-5]
-    private Random rand;
-    private Scanner scan;
+    private final Random rand;
+    private final Scanner scan;
     private boolean isPlaying;
-    private String[] prize; // corr. to prizeNum
+    private final String[] prize; // corr. to prizeNum
     private int prizeNum; // corr. to current prize player is on 
-    private ArrayList<HighScore> scores;
+    public ArrayList<HighScore> scores;
     // end conditions, use to determine game end state
     private boolean walkedAway;
     private boolean lost;
@@ -69,7 +69,7 @@ public class Game
         processAnswer(selectedQ, qNum);
     }
     
-    public void processAnswer(Question selectedQ, int qNum)
+    private void processAnswer(Question selectedQ, int qNum)
     {
         int pAns = -1;
         
@@ -143,7 +143,7 @@ public class Game
         }
     }
     
-    public void checkAnswer(Question q, int qNum, int pAns)
+    private void checkAnswer(Question q, int qNum, int pAns)
     {
         if (pAns == q.getCorrectAns()) // answer is CORRECT
         {
@@ -158,7 +158,7 @@ public class Game
         }
     }
  
-    public void end()
+    private void end()
     {
         if (walkedAway)
         {   
@@ -213,7 +213,7 @@ public class Game
     }
     
     // should only be called when a question has been answered CORRECTLY
-    public void incrementProg() // used to move progress OR move up a level
+   private void incrementProg() // used to move progress OR move up a level
     {
         if (levelProgression < 5) // user cannot progress to next level
         {
@@ -244,11 +244,11 @@ public class Game
         return isPlaying;
     }
     
-    //--------- FILEIO LOAD AND SAVE SCORES ---------
+    //--------- SCORE MANAGEMENT  ---------
     
     
     // load scores from file into program
-    public void getScores()
+    private void getScores()
     {
         scores = new ArrayList<HighScore>();
         File scoreFile = new File("scores");
@@ -280,23 +280,45 @@ public class Game
     }
     
     // save scores + new score to file 
-    public void saveScore()
+    private void saveScore()
     {
-        System.out.println("score saved to file");
         scores.add(finalScore); // add users score to file
         // TODO: format output of scores etc
         Collections.sort(scores); // sort low to high
         Collections.reverse(scores); // reverse to high to low
-
-        try(ObjectOutputStream out = new ObjectOutputStream(new ObjectOutputStream(new FileOutputStream("scores")))) 
-        {
-            out.writeObject(scores);
-            
-        } catch (Exception e) 
-        {
-            System.err.println(e);
-        }
-        System.out.println(scores);
         
+        // if adding new score will make list > 15, remove lowest score to 
+        // keep score list 15 scores maximum
+        if (scores.size() > 15) 
+        {
+            scores.remove(15);
+        }
+        
+        boolean success = true;
+
+        do
+        {
+            try(ObjectOutputStream out = new ObjectOutputStream(new ObjectOutputStream(new FileOutputStream("scores")))) 
+            {
+                out.writeObject(scores);
+
+            } catch (Exception e) 
+            {
+                System.out.println("Error saving to high score file!\n" + e);
+                success = false;
+            }
+        } while (success = false); // retry process in case of error
+        
+        printScoreBoard();
+        
+    }
+    
+    public void printScoreBoard()
+    {
+        System.out.println("  ----- HIGH SCORES -----");
+        for (int i = 0; i < scores.size() - 1; i++)
+        {
+            System.out.printf("\n%2d) %-20s %d", i+1, scores.get(i).getName(), scores.get(i).getScore());
+        }
     }
 }
