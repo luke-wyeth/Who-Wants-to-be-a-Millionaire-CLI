@@ -254,24 +254,19 @@ public class Game
         File scoreFile = new File("scores");
         boolean newFile = false;
         
-        boolean success;
-        do
-        {
             try
             { 
                 // try to create new file in case this is the first time the game has been played
                 // if newFile = true then know not to scan for scores (there arent any)
-                success = true; // reset to true - if error occurs will be set to false
                 newFile = scoreFile.createNewFile(); 
 
             } catch (IOException ex)
             {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-                success = false;
             }
 
             // a new file has not been created so there are previous scores to load
-            if (newFile == false)
+            if (!newFile)
             {
                 try(ObjectInputStream in = new ObjectInputStream(new ObjectInputStream(new FileInputStream("scores")))) 
                 {
@@ -279,20 +274,21 @@ public class Game
 
                 } catch (IOException | ClassNotFoundException e)
                 {
+                    // TODO: fix this scanning empty file
                     System.err.println(e);
-                    success = false;
                 }
             }
-        } while (!success); // retry process if error occurs
+
     }
     
     // save scores + new score to file 
     private void saveScore()
     {
         scores.add(finalScore); // add users score to file
-        // TODO: format output of scores etc
         Collections.sort(scores); // sort low to high
         Collections.reverse(scores); // reverse to high to low
+        
+        // TODO: check why some end scores are being erased
         
         // if adding new score will make list > 15, remove lowest score to 
         // keep score list 15 scores maximum

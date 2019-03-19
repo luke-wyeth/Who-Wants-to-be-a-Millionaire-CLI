@@ -1,11 +1,6 @@
 package main.LIFELINES;
-
 import main.Question;
 
-/**
- *
- * @author Luke
- */
 public abstract class lifeline 
 {
     // a lifeline can only be used once - 'used' is true once the lifeline has been used

@@ -22,11 +22,12 @@ public class PDCProject
         char scanned = scan.next().toUpperCase().charAt(0);
         char playing = ' '; 
         
+        Game game = new Game();
+         
         do
         {
             if (scanned == 'Y') // start game
             {
-                Game game = new Game();
 
                 while (game.isPlaying())
                 {
@@ -38,7 +39,6 @@ public class PDCProject
             }
             else if (scanned == 'S')
             {
-                Game game = new Game();
                 game.printScoreBoard();
                 
                 System.out.println("\n\nPlay Who Wants to be a Millionaire? (Y/N)");
