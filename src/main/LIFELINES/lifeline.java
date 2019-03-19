@@ -20,18 +20,6 @@ public abstract class lifeline
     {
         return used;
     }
-    
-    public boolean validateAns(int ans)
-    {
-        boolean valid = false;
-        
-        if (ans == 1 || ans == 2 || ans == 3)
-        {
-            valid = true;
-        }
-        
-        return valid;
-    }
-    
+            
     public abstract int use(Question question); // method called when player wants to use a particular lifeline
 }

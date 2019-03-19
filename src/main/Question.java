@@ -1,13 +1,20 @@
-
 package main;
 
 public class Question
 { 
     // private and final to avoid tampering by other classes
-    private final String question;
-    private final String[] answers;
-    private final int correctAns;
-    private final int level; 
+    private String question;
+    private String[] answers;
+    private int correctAns;
+    private int level; 
+    
+    public Question()
+    {
+        this.level = 0;
+        this.question = "";
+        this.answers = new String[4];
+        this.correctAns = 0;
+    }
     
     public Question(int level, String question, String[] answers, int correctAns)
     {
@@ -32,10 +39,19 @@ public class Question
         return answers;
     }
     
-    // 50/50 lifeline uses this class to remove 2 answers
+    public void setQuestion(String question)
+    {
+        this.question = question;
+    }
+    
     public void setAnswers(int index, String newAns) 
     {
         answers[index] = newAns;
+    }
+    
+    public void setLevel(int level)
+    {
+        this.level = level;
     }
     
     public int getCorrectAns()

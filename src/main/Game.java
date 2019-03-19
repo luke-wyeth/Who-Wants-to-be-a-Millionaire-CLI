@@ -254,29 +254,36 @@ public class Game
         File scoreFile = new File("scores");
         boolean newFile = false;
         
-        try
-        { 
-            // try to create new file in case this is the first time the game has been played
-            // if newFile = true then know not to scan for scores (there arent any)
-            newFile = scoreFile.createNewFile(); 
-            
-        } catch (IOException ex)
+        boolean success;
+        do
         {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            try
+            { 
+                // try to create new file in case this is the first time the game has been played
+                // if newFile = true then know not to scan for scores (there arent any)
+                success = true; // reset to true - if error occurs will be set to false
+                newFile = scoreFile.createNewFile(); 
 
-        // a new file has not been created so there are previous scores to load
-        if (newFile == false)
-        {
-            try(ObjectInputStream in = new ObjectInputStream(new ObjectInputStream(new FileInputStream("scores")))) 
+            } catch (IOException ex)
             {
-                scores = (ArrayList<HighScore>)in.readObject();
-
-            } catch (IOException | ClassNotFoundException e)
-            {
-                System.err.println(e);
+                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+                success = false;
             }
-        }
+
+            // a new file has not been created so there are previous scores to load
+            if (newFile == false)
+            {
+                try(ObjectInputStream in = new ObjectInputStream(new ObjectInputStream(new FileInputStream("scores")))) 
+                {
+                    scores = (ArrayList<HighScore>)in.readObject();
+
+                } catch (IOException | ClassNotFoundException e)
+                {
+                    System.err.println(e);
+                    success = false;
+                }
+            }
+        } while (!success); // retry process if error occurs
     }
     
     // save scores + new score to file 
@@ -289,17 +296,18 @@ public class Game
         
         // if adding new score will make list > 15, remove lowest score to 
         // keep score list 15 scores maximum
-        if (scores.size() > 15) 
+        if (scores.size() > 16) 
         {
-            scores.remove(15);
+            scores.remove(16);
         }
         
-        boolean success = true;
+        boolean success;
 
         do
         {
             try(ObjectOutputStream out = new ObjectOutputStream(new ObjectOutputStream(new FileOutputStream("scores")))) 
             {
+                success = true;
                 out.writeObject(scores);
 
             } catch (Exception e) 
@@ -307,7 +315,7 @@ public class Game
                 System.out.println("Error saving to high score file!\n" + e);
                 success = false;
             }
-        } while (success = false); // retry process in case of error
+        } while (!success); // retry process in case of error
         
         printScoreBoard();
         

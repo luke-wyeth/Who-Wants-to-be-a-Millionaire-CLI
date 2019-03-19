@@ -9,9 +9,6 @@ import java.util.ArrayList;
  */
 public class createQuestions 
 {
-    public createQuestions()
-    {}
-    
     //used to generate the list objects to save to file
     //Question q = new Question( ,"",new String[]{"","","",""}, );
     public ArrayList create()

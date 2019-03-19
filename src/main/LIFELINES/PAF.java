@@ -10,7 +10,6 @@ import main.Question;
  */
 public class PAF extends lifeline
 {
-
     @Override
     public int use(Question question) 
     {

@@ -9,7 +9,6 @@ import main.Question;
  */
 public class fiftyFifty extends lifeline
 {
-
     @Override
     public int use(Question question) 
     {
