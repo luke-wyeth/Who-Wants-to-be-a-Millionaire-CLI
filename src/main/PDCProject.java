@@ -21,11 +21,11 @@ public class PDCProject
 
         char scanned = scan.next().toUpperCase().charAt(0);
         char playing = ' '; 
-        
-        Game game = new Game();
          
         do
         {
+            Game game = new Game();
+            
             if (scanned == 'Y') // start game
             {
 

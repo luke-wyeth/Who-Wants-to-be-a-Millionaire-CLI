@@ -3,11 +3,7 @@ package main.LIFELINES;
 import java.util.Random;
 import main.Question;
 
-/**
- *
- * @author Luke
- */
-public class ATA extends lifeline
+public class ATA extends Lifeline
 {
     @Override
     public int use(Question question) 

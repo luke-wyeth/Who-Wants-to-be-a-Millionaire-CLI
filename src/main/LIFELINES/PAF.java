@@ -8,7 +8,7 @@ import main.Question;
  *
  * @author Luke
  */
-public class PAF extends lifeline
+public class PAF extends Lifeline
 {
     @Override
     public int use(Question question) 

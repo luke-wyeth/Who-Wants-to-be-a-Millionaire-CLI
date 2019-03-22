@@ -54,6 +54,11 @@ public class Question
         this.level = level;
     }
     
+    public void setCorrectAns(int ans)
+    {
+        this.correctAns = ans;
+    }
+    
     public int getCorrectAns()
     {
         return correctAns;

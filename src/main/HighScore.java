@@ -2,13 +2,17 @@ package main;
 
 
 import java.io.*;
-import java.util.*;
 
 public class HighScore implements Serializable, Comparable
 {
     private String name;
     private int score;
-    private ArrayList<HighScore> scores;
+    
+    public HighScore()
+    {
+        name = "";
+        score = 0;
+    }
     
     public HighScore(String name, int score)
     {
@@ -24,6 +28,16 @@ public class HighScore implements Serializable, Comparable
     public int getScore()
     {
        return score;
+    }
+    
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+    
+    public void setScore(int score)
+    {
+        this.score = score;
     }
     
     @Override
