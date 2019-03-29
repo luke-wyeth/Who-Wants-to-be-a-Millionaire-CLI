@@ -12,19 +12,20 @@ public class Game
     private final Lifeline PAF; // phone a friend
     private final Lifeline fiftyFifty; // 50:50 lifeline
     private int currentLevel;
-    private int levelProgression; // how far through the level player is [1-5]
+    private int levelProgression; // how far through each level player is [1-5]
     private final Random rand;
     private final Scanner scan;
     private boolean isPlaying;
-    private final String[] prize; // corr. to prizeNum
-    private int prizeNum; // corr. to current prize player is on 
+    private final String[] prize; // corresponds to prizeNum
+    private int prizeNum; // corresponds to current prize player is on 
     public ArrayList<HighScore> scores;
+    private int lifelinesUsed; // tally lifelines used to calculate score
+    private HighScore finalScore;
     // end conditions, use to determine game end state
     private boolean walkedAway;
     private boolean lost;
     private boolean won;
-    private int lifelinesUsed; // tally lifelines used to calculate score
-    private HighScore finalScore;
+
     
     public Game()
     {
@@ -54,6 +55,12 @@ public class Game
         getScores();
     }
     
+    /*
+        - selects question from within current level
+        - prints question out and calls method to get + process user answer
+        - this method should be repeated as long as the game is still running, until
+          end condition reached
+    */
     public void askQuestion()
     {
         System.out.println("______________________________________________________________________________________");
@@ -68,6 +75,12 @@ public class Game
         processAnswer(selectedQ, qNum);
     }
     
+    /*
+        - scans in user's answer and ensures it is valid
+        - invalid answers reprint commands and re-prompt answer entry 
+        - lifelines (8,9,0) call lifeline object and then accept answer
+        - valid answers (1-4) pass answer to checkAnswer method
+    */
     private void processAnswer(Question selectedQ, int qNum)
     {
         int pAns = -1;
@@ -81,7 +94,7 @@ public class Game
                 // check for user entering invalid numbers, re-prompt commands
                 if (pAns == 5 || pAns == 7) 
                 {
-                    System.out.println("You need to enter a number between 1 and 4 to answer, or to use a lifeline: \n"
+                    System.out.println("You need to enter a number between 1 and 4 to answer, 6 to walk away, or to use a lifeline: \n"
                             + "8: 50/50\n9: Phone a Friend\n0: Ask the Audience");
                     pAns = -1; // trigger re-scan
                 }
@@ -142,6 +155,12 @@ public class Game
         }
     }
     
+    /*
+        - used to check user answer against correct answer
+        - if answered correctly. progress through level is incremented and
+          the question is removed from the list, so it can't be asked again
+        - if the user answer is wrong, set LOST end state and call end method
+    */
     private void checkAnswer(Question q, int qNum, int pAns)
     {
         if (pAns == q.getCorrectAns()) // answer is CORRECT
@@ -157,6 +176,11 @@ public class Game
         }
     }
  
+    /* 
+        - process each end status
+        - calculates user's score
+        - if user selects to save score, will call saveScore method
+    */
     private void end()
     {
         if (walkedAway)
@@ -211,7 +235,12 @@ public class Game
         isPlaying = false;
     }
     
-    // should only be called when a question has been answered CORRECTLY
+    /*
+        - should only be called when a question has been answered CORRECTLY
+        - increments user's progress through each level (0-2)
+        - if reached top of level 0 or 1, move to next level + reset progress
+        - if reach top of level 2, set end status and end game
+    */
    private void incrementProg() // used to move progress OR move up a level
     {
         if (levelProgression < 5) // user cannot progress to next level
@@ -243,12 +272,12 @@ public class Game
         return isPlaying;
     }
     
-
-    
     //--------- SCORE MANAGEMENT  ---------
     
-    
-    // load scores from file into program
+    /*
+        - load scores from file into score list
+        - if no scores to load, do nothing (file will be created when save score)
+    */
     private void getScores()
     {
         scores = new ArrayList<HighScore>();
@@ -257,23 +286,27 @@ public class Game
 
         file = scoreFile.exists();
 
-            // file exists so we know there are scores to read in
+            // file exists so there are scores to read in
             if (file)
             {
+                // this syntax means that file + streams will be closed automatically
                 try(ObjectInputStream in = new ObjectInputStream(new ObjectInputStream(new FileInputStream("scores")))) 
                 {
                     scores = (ArrayList<HighScore>)in.readObject();
 
                 } catch (IOException | ClassNotFoundException e)
                 {
-                    // TODO: fix this scanning empty file
                     System.err.println(e);
                 }
             }
-
     }
     
-    // save scores + new score to file 
+    /*
+        - save existing scores + new score to file
+        - if no file exists, new one will be created
+        - will only save top 15 scores, any below will be removed
+        - calls method to print score board after saving to file
+    */
     private void saveScore()
     {
         File scoreFile = new File("scores");
@@ -302,7 +335,8 @@ public class Game
 
         do
         {
-            try(ObjectOutputStream out = new ObjectOutputStream(new ObjectOutputStream(new FileOutputStream("scores")))) 
+            // this syntax means file + streams will be closed automatically
+            try(ObjectOutputStream out = new ObjectOutputStream(new ObjectOutputStream(new FileOutputStream("scores"))))
             {
                 success = true;
                 out.writeObject(scores);
@@ -318,6 +352,9 @@ public class Game
         
     }
     
+    /*
+        - prints score list formatted
+    */
     public void printScoreBoard()
     {
         System.out.println("  ----- HIGH SCORES -----");
@@ -327,13 +364,16 @@ public class Game
         }
     }
     
-    // create question lists
+    /*
+        - used to add all questions to list of each level
+        - adds each list to one large list of all questions
+        - returns list of 3 lists, one for each level
+    */
     public ArrayList createQuestions()
     {
         ArrayList<Question> level0 = new ArrayList();
         ArrayList<Question> level1 = new ArrayList();
         ArrayList<Question> level2 = new ArrayList();
-        
         
         Question q0 = new Question(0,"How many Shrek movies are there in total?",new String[]{"2","4","5","6"},2);
         Question q1 = new Question(0,"Which is the closest star to the Earth?",new String[]{"The Sun","Mars","Alpha Centauri A","Alpha Centauri B"},1);

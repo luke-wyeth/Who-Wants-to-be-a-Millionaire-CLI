@@ -24,6 +24,14 @@ public class Question
         this.correctAns = correctAns;
     }
     
+    public Question(String question, String[] answers, int correctAns)
+    {
+        this.level = 0;
+        this.question = question;
+        this.answers = answers;
+        this.correctAns = correctAns;
+    }
+    
     public int getLevel()
     {
         return level;
